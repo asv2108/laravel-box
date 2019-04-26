@@ -11,4 +11,7 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
-.idea/
+/.idea
+/yarn--1556265563982-0.7004305685202354
+/v8-compile-cache-0
+yarn.lock

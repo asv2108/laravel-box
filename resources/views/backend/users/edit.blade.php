@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.backend')
 
 @section('content')
-    @include('admin.users._nav')
+    @include('backend.users._nav')
 
-    <form method="POST" action="{{ route('admin.users.update', $user) }}">
+    <form method="POST" action="{{ route('backend.users.update', $user) }}">
         @csrf
         @method('PUT')
 
@@ -20,18 +20,6 @@
             <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email', $user->email) }}" required>
             @if ($errors->has('email'))
                 <span class="invalid-feedback"><strong>{{ $errors->first('email') }}</strong></span>
-            @endif
-        </div>
-
-        <div class="form-group">
-            <label for="role" class="col-form-label">Role</label>
-            <select id="role" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="role">
-                @foreach ($roles as $value => $label)
-                    <option value="{{ $value }}"{{ $value === old('role', $user->role) ? ' selected' : '' }}>{{ $label }}</option>
-                @endforeach;
-            </select>
-            @if ($errors->has('role'))
-                <span class="invalid-feedback"><strong>{{ $errors->first('role') }}</strong></span>
             @endif
         </div>
 

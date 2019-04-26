@@ -9,18 +9,18 @@
 
     <title>{{ __('Admin panel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js','built') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css','built') }}" rel="stylesheet">
+
+    <!-- Styles  при переносе в подвал лезут ошибки-->
+    <link href="{{ mix('css/app.css','built') }}" rel="stylesheet">
 </head>
 <body id="app">
-<div>
+<header>
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
@@ -49,6 +49,9 @@
                             </li>
                         @endif
                     @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('backend.users.index') }}">{{ __('Users') }}</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>
@@ -71,10 +74,22 @@
             </div>
         </div>
     </nav>
-
-    <main class="py-4">
+</header>
+<main class="app-content py-3">
+    <div class="container">
+        @section('breadcrumbs', Breadcrumbs::render())
+        @yield('breadcrumbs')
+        @include('layouts.partials.flash')
         @yield('content')
-    </main>
-</div>
+    </div>
+</main>
+<footer>
+    <div class="container">
+        <div class="border-top pt-3">
+            <p>&copy; {{ date('Y') }} - Adverts</p>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>

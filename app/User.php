@@ -46,4 +46,29 @@ class User extends Authenticatable
             'password' => bcrypt(Str::random())
         ]);
     }
+
+    public static function register(string $name, string $email, string $password): self
+    {
+        return static::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => bcrypt($password),
+            //'verify_token' => Str::uuid(),
+            //'role' => self::ROLE_USER,
+            //'status' => self::STATUS_WAIT,
+        ]);
+    }
+
+    public function verify(): void
+    {
+        /*
+        if (!$this->isWait()) {
+            throw new \DomainException('User is already verified.');
+        }
+
+        $this->update([
+            'status' => self::STATUS_ACTIVE,
+            'verify_token' => null,
+        ]);*/
+    }
 }

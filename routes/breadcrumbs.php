@@ -2,9 +2,15 @@
 use App\User;
 use DaveJamesMiller\Breadcrumbs\BreadcrumbsGenerator as Crumbs;
 
+
 Breadcrumbs::register('home', function (Crumbs $crumbs) {
+    $crumbs->push('Home', route('home'));
+});
+
+Breadcrumbs::register('backend.home', function (Crumbs $crumbs) {
     $crumbs->push('Home', route('backend.home'));
 });
+
 
 Breadcrumbs::register('login', function (Crumbs $crumbs) {
     $crumbs->parent('home');

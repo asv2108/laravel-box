@@ -4,6 +4,7 @@
 /public/built
 /storage/*.key
 /storage/docker
+/storage/docker/mysql
 /vendor
 .env
 .phpunit.result.cache

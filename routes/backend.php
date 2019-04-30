@@ -9,7 +9,7 @@ Route::group(
         'prefix' => 'backend',
         'as' => 'backend.',
         'namespace' => 'Backend',
-        'middleware' => ['auth'],
+        'middleware' => ['auth','can:admin-panel'],
     ],
     function () {
         Route::get('/', 'HomeController@index')->name('home');

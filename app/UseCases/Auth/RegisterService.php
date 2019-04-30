@@ -27,7 +27,8 @@ class RegisterService
             $request['email'],
             $request['password']
         );
-
+        // можно было сразу через фасад Mailer:: работать, но тогда будет жесткая привязка к одной реализации
+        // а так через DI получаем гибкость, если в конструкторе при уточнении использовать не класс а интерфейс!!!!
        // $this->mailer->to($user->email)->send(new VerifyMail($user));
        // $this->dispatcher->dispatch(new Registered($user));
     }

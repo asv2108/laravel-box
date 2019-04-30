@@ -20,6 +20,8 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+
+    //если отдавать user как ресурс, то в целях безопасности некоторые его свойства не должны быть в обьекте!!!
     /**
      * The attributes that should be hidden for arrays.
      *

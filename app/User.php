@@ -7,6 +7,16 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Str;
 
+
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $phone
+ * @property string $password
+ * @property string $verify_token
+ * @property string $role
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -17,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role'
     ];
 
 
@@ -31,6 +41,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public const ROLE_USER = 'user';
+    public const ROLE_MODERATOR = 'moderator';
+    public const ROLE_ADMIN = 'admin';
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -40,12 +54,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function rolesList(): array
+    {
+        return [
+            self::ROLE_USER => 'User',
+            self::ROLE_MODERATOR => 'Moderator',
+            self::ROLE_ADMIN => 'Admin',
+        ];
+    }
+
     public static function new($name, $email): self
     {
         return static::create([
             'name' => $name,
             'email' => $email,
-            'password' => bcrypt(Str::random())
+            'password' => bcrypt(Str::random()),
+            'role' => self::ROLE_USER,
         ]);
     }
 
@@ -55,10 +79,33 @@ class User extends Authenticatable
             'name' => $name,
             'email' => $email,
             'password' => bcrypt($password),
-            //'verify_token' => Str::uuid(),
-            //'role' => self::ROLE_USER,
+            'role' => self::ROLE_USER,
             //'status' => self::STATUS_WAIT,
+            //'verify_token' => Str::uuid(),
         ]);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isModerator(): bool
+    {
+        return $this->role === self::ROLE_MODERATOR;
+    }
+
+    public function changeRole($role): void
+    {
+        if (!array_key_exists($role, self::rolesList())) {
+            throw new \InvalidArgumentException('Undefined role "' . $role . '"');
+        }
+        if ($this->role === $role) {
+            throw new \DomainException('Role is already assigned.');
+        }
+
+        $this->update(['role' => $role]);
+        //dd($res);
     }
 
     public function verify(): void

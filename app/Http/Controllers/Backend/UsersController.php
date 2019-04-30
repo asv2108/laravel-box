@@ -12,7 +12,9 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::orderByDesc('id')->paginate(20);
-        return view('backend.users.index',compact('users'));
+        $roles = User::rolesList();
+
+        return view('backend.users.index',compact('users','roles'));
     }
     public function create()
     {
@@ -34,17 +36,18 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
-        //$roles = User::rolesList();
-        return view('backend.users.edit', compact('user'));
+        $roles = User::rolesList();
+        return view('backend.users.edit', compact('user','roles'));
     }
 
     public function update(UpdateRequest $request, User $user)
     {
         $user->update($request->only(['name', 'email']));
-        /*
+
         if ($request['role'] !== $user->role) {
+            dd($request['role']);
             $user->changeRole($request['role']);
-        }*/
+        }
         return redirect()->route('backend.users.show', $user);
     }
 

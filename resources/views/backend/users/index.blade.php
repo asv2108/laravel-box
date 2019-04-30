@@ -28,7 +28,17 @@
                             <input id="email" class="form-control" name="email" value="{{ request('email') }}">
                         </div>
                     </div>
-
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="role" class="col-form-label">Role</label>
+                            <select id="role" class="form-control" name="role">
+                                <option value=""></option>
+                                @foreach ($roles as $value => $label)
+                                    <option value="{{ $value }}"{{ $value === request('role') ? ' selected' : '' }}>{{ $label }}</option>
+                                @endforeach;
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="col-sm-2">
                         <div class="form-group">
@@ -47,6 +57,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Role</th>
         </tr>
         </thead>
         <tbody>
@@ -56,7 +67,15 @@
                 <td>{{ $user->id }}</td>
                 <td><a href="{{ route('backend.users.show', $user) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
+                <td>
+                    @if ($user->isAdmin())
+                        <span class="badge badge-danger">Admin</span>
+                    @else
+                        <span class="badge badge-secondary">User</span>
+                    @endif
+                </td>
             </tr>
+
         @endforeach
 
         </tbody>
